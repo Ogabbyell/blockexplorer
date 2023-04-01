@@ -1,0 +1,36 @@
+<br>
+<br>
+<div class=" container pt-5">
+    <div class=" row">
+      <div class=" col-md-12">
+        <div class=" card">
+          <div class=" card-header table-light d-flex flex-row justify-content-between">
+            <h4 class=" card-title">Simple Block Explorer</h4>
+            <h6>Block Number: {{ latestBlock }} </h6>
+          </div>
+          <div class=" card-body">
+            <div class=" table-responsive">
+              <table class=" table tablesorter table-light" id="">
+                <thead class=" text-light table-dark text-center">
+                  <tr>
+                    <th>Wallet</th>
+                    <th>NFTs</th>
+                    <th>Balances</th>
+                    <th>Salary</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  <tr>
+                    <td>{{ address }}</td>
+                    <td>{{ nfts }}</td>
+                    <td>{{ tokens }}</td>
+                    <td class=" text-center">$36,738</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
