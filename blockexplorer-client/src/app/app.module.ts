@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountsComponent } from './accounts/accounts.component';
 import { TxnValuePipe } from './pipes/txn-value.pipe';
 import { GasPricePipe } from './pipes/gas-price.pipe';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { GasPricePipe } from './pipes/gas-price.pipe';
     MdbTabsModule,
     MdbTooltipModule,
     MdbValidationModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

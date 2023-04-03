@@ -22,6 +22,7 @@
     "@fortawesome/fontawesome-free": "^6.0.0",
     "axios": "^1.3.4",
     "mdb-angular-ui-kit": "file:mdb-angular-ui-kit-4.0.0.tgz",
+    "ngx-pagination": "^6.0.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"

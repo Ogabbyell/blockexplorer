@@ -21,6 +21,10 @@ export class AppComponent implements OnInit {
 
   latestBlock = "";
   transactions: ITransactions[] = [];
+  page: number = 1;
+  count: number = 0;
+  tableSize: number = 10;
+  tableSizes: any = [3, 6, 9, 12];
 
   async ngOnInit() {
     const { data } = await axios.get(`http://localhost:3000`);
@@ -31,10 +35,16 @@ export class AppComponent implements OnInit {
     // based on the response structure noticed from console.log of response in server
     this.transactions = data.transactions.transactions;
     console.log(this.transactions);
-    // let tx = this.transactions[0].gasPrice.hex.toString(10);
-    // console.log(tx);
   }
 
+  onTableDataChange(event: any) {
+    this.page = event;
+  }
+  
+  onTableSizeChange(event: any): void {
+    this.tableSize = event.target.value;
+    this.page = 1;
+  }
   
   
 }
