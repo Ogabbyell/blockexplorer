@@ -1,50 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import axios from 'axios';
+import { Component } from '@angular/core';
 
-interface ITransactions {
-  hash: string;
-  type: number;
-  from: string;
-  to: string;
-  value: any;
-  gasPrice: any;
-  blockNumber: number;
-}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  constructor() {}
-
-  latestBlock = "";
-  transactions: ITransactions[] = [];
-  page: number = 1;
-  count: number = 0;
-  tableSize: number = 10;
-  tableSizes: any = [3, 6, 9, 12];
-
-  async ngOnInit() {
-    const { data } = await axios.get(`http://localhost:3000`);
-  
-    this.latestBlock = data.latestBlock;
-    
-    // we get the block transactions using data.transactions.transactions, 
-    // based on the response structure noticed from console.log of response in server
-    this.transactions = data.transactions.transactions;
-    console.log(this.transactions);
-  }
-
-  onTableDataChange(event: any) {
-    this.page = event;
-  }
-  
-  onTableSizeChange(event: any): void {
-    this.tableSize = event.target.value;
-    this.page = 1;
-  }
+export class AppComponent  {
   
   
 }

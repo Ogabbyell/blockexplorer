@@ -22,6 +22,7 @@ const settings = {
 };
 
 const alchemy = new Alchemy(settings);
+const address = "vitalik.eth";
 
 const main = async () => {
   const latestBlock = await alchemy.core.getBlockNumber();
@@ -30,38 +31,12 @@ const main = async () => {
   const transactions = await alchemy.core.getBlockWithTransactions(latestBlock);
   console.log(transactions); 
 
-  // Get all outbound transfers for a provided address
-  // const tokens = await alchemy.core.getTokenBalances('vitalik.eth');
-  // console.log(tokens);
-  
-  
-  // const tokenBalances = await alchemy.core.getTokenBalances(address);
-  // const tokens = JSON.stringify(tokenBalances);
-  
-  // console.log("Token Balances: " + tokens);
-
-  // Get all the NFTs owned by an address
-  // alchemy.nft.getNftsForOwner('vitalik.eth').then(nfts => {
-  //   console.log(nfts.totalCount);
-  //   return nfts.totalCount;
-  // });
-
-  // Get all the image urls for all the NFTs an address owns.
-  // for await (const nft of alchemy.nft.getNftsForOwnerIterator('vitalik.eth')) {
-  //   console.log(nft.media);
-  //   return nft.media;
-  // };
-  // const nftsBalances = await alchemy.nft.getNftsForOwner(address);
-  // const nfts = JSON.stringify(nftsBalances);
-
-  // console.log("NFTs owned by address" + nfts);
-
   // Listen to all new pending transactions
-  // alchemy.ws.on(
-  //   { method: "alchemy_pendingTransactions",
-  //   fromAddress: address },
-  //   (res) => console.log(res)
-  // );
+  alchemy.ws.on(
+    { method: "alchemy_pendingTransactions",
+    fromAddress: address },
+    (res) => console.log(res)
+  );
 
   return { latestBlock, transactions };
 }
@@ -83,41 +58,32 @@ app.get("/", async (req, res) => {
 });
 
 const account = async () => {
+
+  let balance = await alchemy.core.getBalance(address, "latest");
+  console.log(address);
+  console.log("balance = " + balance);
+
+  let txnCount = await alchemy.core.getTransactionCount(address);
+  console.log("txnCount = " + txnCount);
+
+  let nfts = await alchemy.nft.getNftsForOwner(address);
+
+  let nftsOwned = nfts.totalCount;
+  console.log("nftsOwned= " + nftsOwned);
   
   // Get all outbound transfers for a provided address
-  // const tokens = await alchemy.core.getTokenBalances('vitalik.eth');
-  // console.log(tokens);
-  
-  
-  // const tokenBalances = await alchemy.core.getTokenBalances(address);
-  // const tokens = JSON.stringify(tokenBalances);
-  
-  // console.log("Token Balances: " + tokens);
-
-  // Get all the NFTs owned by an address
-  // alchemy.nft.getNftsForOwner('vitalik.eth').then(nfts => {
-  //   console.log(nfts.totalCount);
-  //   return nfts.totalCount;
-  // });
-
-  // Get all the image urls for all the NFTs an address owns.
-  // for await (const nft of alchemy.nft.getNftsForOwnerIterator('vitalik.eth')) {
-  //   console.log(nft.media);
-  //   return nft.media;
-  // };
-  // const nftsBalances = await alchemy.nft.getNftsForOwner(address);
-  // const nfts = JSON.stringify(nftsBalances);
-
-  // console.log("NFTs owned by address" + nfts);
+  const tokens = await alchemy.core.getTokenBalances('vitalik.eth');
+  let balances = tokens.tokenBalances;
+  console.log(balances);
 
   // Listen to all new pending transactions
-  // alchemy.ws.on(
-  //   { method: "alchemy_pendingTransactions",
-  //   fromAddress: address },
-  //   (res) => console.log(res)
-  // );
+  alchemy.ws.on(
+    { method: "alchemy_pendingTransactions",
+    fromAddress: address },
+    (res) => console.log(res)
+  );
 
-  return { latestBlock, transactions };
+  return { address, balance, txnCount, nftsOwned, balances };
 }
 account();
 

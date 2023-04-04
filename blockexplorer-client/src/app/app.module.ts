@@ -26,13 +26,15 @@ import { AccountsComponent } from './accounts/accounts.component';
 import { TxnValuePipe } from './pipes/txn-value.pipe';
 import { GasPricePipe } from './pipes/gas-price.pipe';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { BlockexplorerComponent } from './blockexplorer/blockexplorer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AccountsComponent,
     TxnValuePipe,
-    GasPricePipe
+    GasPricePipe,
+    BlockexplorerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,58 @@
+<!-- Navbar -->
+<br>
+  <div class=" container pt-5">
+      <div class=" row">
+        <div class=" col-md-12">
+          <div class=" card">
+            <div class=" card-header table-light d-flex flex-row justify-content-between">
+              <h4 class=" card-title">Simple Block Explorer</h4>
+              <h6>Block Number: {{ latestBlock }} </h6>
+            </div>
+            <div class=" card-body">
+              <div class=" table-responsive">
+                <table class=" table tablesorter table-light" id="">
+                  <thead class=" text-light table-dark text-center">
+                    <tr>
+                      <th>Transaction Hash</th>
+                      <th>Method</th>
+                      <th>Block</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>Value</th>
+                      <th>Txn Fee</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
+                    <tr *ngFor="let transaction of transactions | paginate
+                    : {
+                        itemsPerPage: tableSize,
+                        currentPage: page,
+                        totalItems: count
+                      };
+                let i = index">
+                      <td>{{ transaction.hash | slice:0:16 }}...</td>
+                      <td>{{ transaction.type }}</td>
+                      <td>{{ transaction.blockNumber }}</td>
+                      <td>{{ transaction.from | slice:0:8 }}...{{transaction.from | slice:34}}</td>
+                      <td>{{ transaction.to | slice:0:8 }}...{{transaction.to | slice:34}}</td>
+                      <td>{{ transaction.value.hex | txnValue }}</td>
+                      <td>{{ transaction.gasPrice.hex | gasPrice }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="d-flex justify-content-center">
+                  <pagination-controls
+                    previousLabel="Prev"
+                    nextLabel="Next"
+                    (pageChange)="onTableDataChange($event)">
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+  
