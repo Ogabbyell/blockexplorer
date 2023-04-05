@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const port = 3000;
 // Setup: npm install alchemy-sdk
-const { Network, Alchemy } = require("alchemy-sdk");
+const { Network, Alchemy, Utils } = require("alchemy-sdk");
 const cors = require("cors");
+
 require("dotenv").config({path:".env"});
 
 // allow access to Angular app domain
@@ -22,19 +23,19 @@ const settings = {
 };
 
 const alchemy = new Alchemy(settings);
-const address = "vitalik.eth";
+const walletAddress = "vitalik.eth";
 
 const main = async () => {
   const latestBlock = await alchemy.core.getBlockNumber();
-  console.log("The latest block number is", latestBlock);
+  // console.log("The latest block number is", latestBlock);
 
   const transactions = await alchemy.core.getBlockWithTransactions(latestBlock);
-  console.log(transactions); 
+  // console.log(transactions); 
 
   // Listen to all new pending transactions
   alchemy.ws.on(
     { method: "alchemy_pendingTransactions",
-    fromAddress: address },
+    fromAddress: walletAddress },
     (res) => console.log(res)
   );
 
@@ -59,31 +60,54 @@ app.get("/", async (req, res) => {
 
 const account = async () => {
 
-  let balance = await alchemy.core.getBalance(address, "latest");
-  console.log(address);
-  console.log("balance = " + balance);
+  let balance = await alchemy.core.getBalance(walletAddress, "latest");
+  walletBalance = Utils.formatEther(balance);
+  // console.log(walletAddress);
+  // console.log("balance = " + walletBalance);
 
-  let txnCount = await alchemy.core.getTransactionCount(address);
-  console.log("txnCount = " + txnCount);
+  let txnCount = await alchemy.core.getTransactionCount(walletAddress);
+  // console.log("txnCount = " + txnCount);
 
-  let nfts = await alchemy.nft.getNftsForOwner(address);
+  let nfts = await alchemy.nft.getNftsForOwner(walletAddress);
 
   let nftsOwned = nfts.totalCount;
-  console.log("nftsOwned= " + nftsOwned);
+  // console.log("nftsOwned= " + nftsOwned);
   
-  // Get all outbound transfers for a provided address
+  // Get token balances
   const tokens = await alchemy.core.getTokenBalances('vitalik.eth');
+
   let balances = tokens.tokenBalances;
-  console.log(balances);
+
+  // remove tokens with zero balances 
+  let nonZerobalances = balances.filter((token) => {
+    return token.tokenBalance !== "0";
+  });
+  // console.log(nonZerobalances);
+  balances = nonZerobalances;
+  // console.log(balances);
+
+  // for (let token of balances) {
+  //   // get balance of token
+  //   let balance = token.tokenBalance;
+    
+  //    // get tokens metadada 
+  //   let tokenMetadata = await alchemy.core.getTokenMetadata(token.contractAddress);
+
+  //   // compute token balance in human readable format
+  //   tokenBalance = balance / Math.pow(10, tokenMetadata.decimals);
+  //   metadata = tokenMetadata;
+
+  //   // console.log(metadata);
+  // }
 
   // Listen to all new pending transactions
   alchemy.ws.on(
     { method: "alchemy_pendingTransactions",
-    fromAddress: address },
+    fromAddress: walletAddress },
     (res) => console.log(res)
   );
 
-  return { address, balance, txnCount, nftsOwned, balances };
+  return { walletAddress, walletBalance, txnCount, nftsOwned, balances };
 }
 account();
 

@@ -6,10 +6,11 @@ interface IBalances {
   tokenBalance: string;
 }
 
-interface IBalance {
-  hex: any;
-  type: number;
-}
+// interface IMetadata {
+//   decimals: number;
+//   name: string;
+//   symbol: string;
+// }
 
 @Component({
   selector: 'app-accounts',
@@ -20,7 +21,8 @@ export class AccountsComponent implements OnInit {
   constructor() {}
 
   address = "";
-  balance: IBalance[] = [];
+  balance = "";
+  // metadata: IMetadata[] = [];
   txnCount = "";
   nftsOwned = "";
   balances: IBalances[] = [];
@@ -31,13 +33,15 @@ export class AccountsComponent implements OnInit {
 
   async ngOnInit() {
     const { data } = await axios(`http://localhost:3000/accounts`);
-    this.address = data.address;
-    this.balance = data.balance;
+    this.address = data.walletAddress;
+    this.balance = data.walletBalance;
     // this.balance = parseInt(data['balance'][0]["hex"], 16);
-    console.log(this.balance);
+    // console.log(this.balance);
     this.txnCount = data.txnCount;
     this.nftsOwned = data.nftsOwned;
     this.balances = data.balances;
+    // this.metadata = data.metadata;
+    
   }
 
   onTableDataChange(event: any) {
