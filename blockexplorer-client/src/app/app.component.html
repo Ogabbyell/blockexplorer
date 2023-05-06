@@ -28,14 +28,14 @@
       <form class="navbar-form">
         <div class="input-group">
           <div class="form-outline">
-            <input type="search" id="form1" class="form-control bg-light"/>
+            <input type="search" id="form1" class="form-control bg-light" #address (keyup.enter)="update(address.value)" (blur)="update(address.value); address.value='' "/>
             <label class="form-label" for="form1">Enter Address to Search...</label>
           </div>
-          <button type="button" class="btn btn-primary" >
+          <button type="button" class="btn btn-primary" (click)="update(address.value)">
             <i class="fas fa-search"></i>
           </button>
         </div>
-       </form>
+      </form>
 
       <ul class="navbar-nav flex-row">
         <!-- Icons -->
@@ -140,7 +140,7 @@
 
   <!-- Copyright -->
   <div class="text-center p-3 bg-secondary">
-    © 2020 Copyright:
+    © 2023 Copyright:
     <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
   </div>
   <!-- Copyright -->

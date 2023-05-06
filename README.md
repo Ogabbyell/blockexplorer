@@ -1,2 +1,2 @@
 # blockexplorer
-Blockchain explorer built with Angular and Nodejs
+Blockchain explorer built with Angular 15 and Nodejs 18

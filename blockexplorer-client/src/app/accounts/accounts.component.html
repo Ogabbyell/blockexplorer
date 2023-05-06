@@ -19,11 +19,14 @@
         <div class=" card">
           <div class=" card-body">
             <div class=" table-responsive">
+              <h5>Tokens Owned</h5>
               <table class=" table tablesorter table-light" id="">
                 <thead class=" text-light table-dark text-center">
                   <tr>
                     <th>Contract Address</th>
-                    <th>Token Balance</th>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Balance</th>
                   </tr>
                 </thead>
                 <tbody class="text-center">
@@ -35,7 +38,9 @@
                     };
               let i = index">
                     <td>{{ balance.contractAddress | slice:0:8 }}...{{ balance.contractAddress | slice:34 }}</td>
-                    <td>{{ balance.tokenBalance | txnValue}}</td>
+                    <td>{{ balance.name }}</td>
+                    <td>{{ balance.symbol }}</td>
+                    <td>{{ balance.balance }}</td>
                   </tr>
                 </tbody>
               </table>

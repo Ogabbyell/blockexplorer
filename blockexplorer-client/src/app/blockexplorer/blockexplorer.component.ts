@@ -21,6 +21,7 @@ export class BlockexplorerComponent implements OnInit {
   constructor() {}
 
   latestBlock = "";
+  ethPrice = "";
   transactions: ITransactions[] = [];
   page: number = 1;
   count: number = 0;
@@ -29,13 +30,15 @@ export class BlockexplorerComponent implements OnInit {
 
   async ngOnInit() {
     const { data } = await axios.get(`http://localhost:3000`);
-  
+    
+    this.ethPrice = data.ethPrice;
     this.latestBlock = data.latestBlock;
+    console.log(this.ethPrice);
     
     // we get the block transactions using data.transactions.transactions, 
     // based on the response structure noticed from console.log of response in server
     this.transactions = data.transactions.transactions;
-    console.log(this.transactions);
+    // console.log(this.transactions);
   }
 
   onTableDataChange(event: any) {

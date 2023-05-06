@@ -8,5 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent  {
   
-  
+  address = '';
+  update(address: string) { 
+    if (address) {
+      this.address = address; 
+      console.log(address);
+    }
+  }
 }

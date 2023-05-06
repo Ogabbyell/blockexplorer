@@ -4,6 +4,9 @@ import axios from "axios";
 interface IBalances {
   contractAddress: string;
   tokenBalance: string;
+  balance: string;
+  name: string;
+  symbol: string
 }
 
 // interface IMetadata {
@@ -26,6 +29,8 @@ export class AccountsComponent implements OnInit {
   txnCount = "";
   nftsOwned = "";
   balances: IBalances[] = [];
+
+  // pagination
   page: number = 1;
   count: number = 0;
   tableSize: number = 10;
@@ -39,11 +44,12 @@ export class AccountsComponent implements OnInit {
     // console.log(this.balance);
     this.txnCount = data.txnCount;
     this.nftsOwned = data.nftsOwned;
-    this.balances = data.balances;
+    this.balances = data.nonZerobalances;
     // this.metadata = data.metadata;
     
   }
 
+  // pagination
   onTableDataChange(event: any) {
     this.page = event;
   }
