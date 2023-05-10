@@ -23,6 +23,15 @@ interface IBalances {
 export class AccountsComponent implements OnInit {
   constructor() {}
 
+  walletAddress = '';
+  getAddress(walletAddress: string) { 
+    if (walletAddress) {
+      this.walletAddress = walletAddress; 
+      console.log(walletAddress);
+    }
+    return walletAddress;
+  };
+  
   address = "";
   balance = "";
   // metadata: IMetadata[] = [];
@@ -59,3 +68,10 @@ export class AccountsComponent implements OnInit {
     this.page = 1;
   }
 }
+
+// const { data } = await axios.get(`http://localhost:3000/accounts`, {
+//       params: {walletAddress: this.walletAddress}
+//     });
+
+
+
