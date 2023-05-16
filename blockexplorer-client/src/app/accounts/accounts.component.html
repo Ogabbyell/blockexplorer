@@ -1,20 +1,11 @@
 <br>
 <br>
 <br>
-<div class="container w-50 p-3">
-  
-    <div class="input-group">
-      <button class="btn btn-primary" type="button" (click)="getAddress(walletAddress.value)">Submit</button>
-      <input type="text" class="form-control" placeholder="Enter wallet address" #walletAddress
-      (keyup.enter)="getAddress(walletAddress.value)">
-    </div>
- 
-</div>
-<br>
+
 <div class="container">
   <div class="row d-flex align-items-center justify-content-center">
     <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-      <div class="card-header">Wallet Address: {{ address }}</div>
+      <div class="card-header">Wallet Address: {{ address | slice:0:8 }}...{{ address | slice:34}}</div>
       <div class="card-body text-center">
         <h5 class="card-title">Balance: {{ balance + '  ETH'}}</h5>
         <p class="card-text">NFTs Owned: {{ nftsOwned }}</p>

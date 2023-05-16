@@ -8,6 +8,16 @@
               <i class="fab fa-brands fa-ethereum fa-beat"></i>
               <h6>Price: {{ ethPrice + '  USD' }} </h6>
             </div>
+            <div class="container w-50 p-3">
+  
+              <div class="input-group">
+                <button class="btn btn-primary" type="button" (click)="getAddress(walletAddress.value)">Submit</button>
+                <input type="text" class="form-control" placeholder="Enter wallet address" #walletAddress
+                (keyup.enter)="getAddress(walletAddress.value)">
+              </div>
+           
+          </div>
+          <br>
             <div class=" card-header table-light d-flex flex-row justify-content-between">
               <h4 class=" card-title">Simple Block Explorer</h4>
               <h6>Block Number: {{ latestBlock }} </h6>
@@ -34,7 +44,7 @@
                         totalItems: count
                       };
                 let i = index">
-                      <td>{{ transaction.hash | slice:0:16 }}...</td>
+                      <td class="clickable"  onclick="window.location='...'">{{ transaction.hash | slice:0:16 }}...</td>
                       <td>{{ transaction.type }}</td>
                       <td>{{ transaction.blockNumber }}</td>
                       <td>{{ transaction.from | slice:0:8 }}...{{transaction.from | slice:34}}</td>
@@ -49,8 +59,7 @@
                     previousLabel="Prev"
                     nextLabel="Next"
                     (pageChange)="onTableDataChange($event)">
-                  </pagination-controls>
-                </div>
+                  </pagination-controls> 
               </div>
             </div>
           </div>

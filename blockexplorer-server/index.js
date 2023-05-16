@@ -19,95 +19,34 @@ app.use(express.json());
 
 // Optional Config object, but defaults to demo api-key and eth-mainnet.
 const settings = {
-  apiKey: process.env.ALCHEMY_API_KEY, // Replace with your Alchemy API Key.
-  network: Network.ETH_MAINNET, // Replace with your network.
+  apiKey: process.env.ALCHEMY_API_KEY, 
+  network: Network.ETH_MAINNET, 
 };
 
 const alchemy = new Alchemy(settings);
-const walletAddress = "vitalik.eth";
-
-let key = process.env.COINMARKET_API_KEY;
 
 const main = async () => {
+  // get current eth price
   let price = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum');
-  // price = Object.assign({}, ...(price.map(item => ({ [item.key]: item.value }) )));
+  
   price = Object.assign({}, price.data);
   const ethPrice = Number(price[0].current_price);
   console.log(ethPrice);
-  // get current price of ethereum
-  // const price = await axios.get("https://pro-api.coinmarketcap.com/currencies/ethereum/");
-  // console.log(price);
-
-  // let response = null;
-  // new Promise(async (resolve, reject) => {
-  //   try {
-  //     response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=1027', {
-  //       headers: {
-  //         'X-CMC_PRO_API_KEY': key,
-  //       },
-  //     });
-  //   } catch(ex) {
-  //     response = null;
-  //     // error
-  //     console.log(ex);
-  //     reject(ex);
-  //   }
-  //   if (response) {
-  //     // success
-  //     const price = response.data;
-  //     // console.log(price);
-  //     // resolve(price);
-  //     return price;
-  //   }
-  // });
-
-
-
-// let config = {
-//   method: 'get',
-//   maxBodyLength: Infinity,
-//   url: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?id=1027',
-//   headers: { 
-//     'X-CMC_PRO_API_KEY': key, 
-//     'Accept': '*/*'
-//   }
-// };
-
-// let price = axios.request(config)
-//             .then((response) => {
-//               console.log(JSON.stringify(response.data.data));
-//             })
-//             .catch((error) => {
-//               console.log(error);
-//             });
-
-
-
-
+  
+  // get latest block in the ethereum blockchain
   const latestBlock = await alchemy.core.getBlockNumber();
-  // console.log("The latest block number is", latestBlock);
-  // console.log(ethPrice);
-
+  
+  // get all transactions on the latest block 
   const transactions = await alchemy.core.getBlockWithTransactions(latestBlock);
-  // console.log(transactions); 
-
-  // Listen to all new pending transactions
-  alchemy.ws.on(
-    { method: "alchemy_pendingTransactions",
-    fromAddress: walletAddress },
-    (res) => console.log(res)
-  );
 
   return { latestBlock, transactions, ethPrice };
-  // ethPrice
 }
 
-main();
 
 app.get("/", async (req, res) => {
   try {
     // Get and return the current block data
-    const data = await main();  // change this to block function
+    const data = await main();  // call the block function above
     res.status(200);
     res.json(data);
   } catch (error) {
@@ -118,16 +57,22 @@ app.get("/", async (req, res) => {
   }
 });
 
+// get search walletAddress from frontend
+app.post("/send", (req, res) => {
+  walletAddress  = req.body.walletAddress;
+  return walletAddress;
+});
+
 const account = async () => {
-
+  // get balance of walletAddress entered 
   let balance = await alchemy.core.getBalance(walletAddress, "latest");
+  // format the response 
   walletBalance = Number(Utils.formatEther(balance)).toFixed(4);
-  // console.log(walletAddress);
-  // console.log("balance = " + walletBalance);
-
+  
+  // get transactions count for address
   let txnCount = await alchemy.core.getTransactionCount(walletAddress);
-  // console.log("txnCount = " + txnCount);
-
+  
+  // get total number of NFTs owned by the walletAddress
   let nfts = await alchemy.nft.getNftsForOwner(walletAddress);
 
   let nftsOwned = nfts.totalCount;
@@ -136,13 +81,10 @@ const account = async () => {
   // Get token balances
   const balances = await alchemy.core.getTokenBalances(walletAddress);
 
-  // let balances = tokens.tokenBalances;
-
   // remove tokens with zero balances 
   const nonZerobalances = balances.tokenBalances.filter((token) => {
     return token.tokenBalance !== "0";
   });
-  // console.log(nonZerobalances);
 
   for (let token of nonZerobalances) {
     // get balance of token
@@ -150,11 +92,12 @@ const account = async () => {
 
     //  get metadata of token
     const metadata = await alchemy.core.getTokenMetadata(token.contractAddress); 
+    // get token balance for each token
     token.balance = Number(balance / Math.pow(10, metadata.decimals)).toFixed(2);
+    //  get name of each token
     token.name = metadata.name;
+    // get symbol of each token
     token.symbol = metadata.symbol;
-
-    // console.log(nonZerobalances);
   }
 
  
@@ -178,7 +121,6 @@ const account = async () => {
 
   return { walletAddress, walletBalance, txnCount, nftsOwned, nonZerobalances};
 };
-account();
 
 
 app.get("/accounts", async (req, res) => {
@@ -193,8 +135,40 @@ app.get("/accounts", async (req, res) => {
       res.status(500);
       res.json({ error: error.message });
     }
-  });
+});
+
+app.post("/txnHash", async (req, res) => {
+  txHash = req.body.txHash;
+  return txHash;
+});
+
+const txnDetails = async () => {
+  //Initialize variables for the parameters
+  const tx = "0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b" // txnHash;
+
+  //Call the method to fetch the transaction receipt of the tx
+  let response = await alchemy.core.getTransactionReceipt(tx);
+
+  console.log(response);
+
+  return { response };
+};
+txnDetails();
+
+app.get("/details", async (req, res) => {
+  try {
+    // Get and return the crypto data
+    const data = await txnDetails();
+    res.status(200);
+    res.json(data);
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500);
+    res.json({ error: error.message });
+  }
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
-  });
+});

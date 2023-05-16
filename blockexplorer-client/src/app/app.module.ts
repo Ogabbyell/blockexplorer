@@ -27,6 +27,7 @@ import { TxnValuePipe } from './pipes/txn-value.pipe';
 import { GasPricePipe } from './pipes/gas-price.pipe';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { BlockexplorerComponent } from './blockexplorer/blockexplorer.component';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { BlockexplorerComponent } from './blockexplorer/blockexplorer.component'
     AccountsComponent,
     TxnValuePipe,
     GasPricePipe,
-    BlockexplorerComponent
+    BlockexplorerComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
