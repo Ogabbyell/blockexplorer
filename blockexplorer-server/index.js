@@ -139,12 +139,13 @@ app.get("/accounts", async (req, res) => {
 
 app.post("/txnHash", async (req, res) => {
   txHash = req.body.txHash;
+  console.log(txHash);
   return txHash;
 });
 
 const txnDetails = async () => {
   //Initialize variables for the parameters
-  const tx = "0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b" // txnHash;
+  const tx =  txHash;
 
   //Call the method to fetch the transaction receipt of the tx
   let response = await alchemy.core.getTransactionReceipt(tx);
@@ -153,7 +154,6 @@ const txnDetails = async () => {
 
   return { response };
 };
-txnDetails();
 
 app.get("/details", async (req, res) => {
   try {

@@ -44,7 +44,7 @@
                         totalItems: count
                       };
                 let i = index">
-                      <td class="clickable"  onclick="window.location='...'">{{ transaction.hash | slice:0:16 }}...</td>
+                      <td class="clickable"  (click)="getTxHash($event)">{{ transaction.hash }}</td>
                       <td>{{ transaction.type }}</td>
                       <td>{{ transaction.blockNumber }}</td>
                       <td>{{ transaction.from | slice:0:8 }}...{{transaction.from | slice:34}}</td>

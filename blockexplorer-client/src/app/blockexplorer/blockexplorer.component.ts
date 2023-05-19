@@ -50,6 +50,7 @@ export class BlockexplorerComponent implements OnInit {
     this.page = 1;
   }
 
+  // Get inputed wallet address
   walletAddress: string = "";
   async getAddress(walletAddress: string) { 
     if (walletAddress) {
@@ -63,17 +64,15 @@ export class BlockexplorerComponent implements OnInit {
     return walletAddress;
   };
 
+  // Get selected Transaction Hash
   txHash: string = "";
-  async getTxHash(txHash: string) { 
-    if (txHash) {
-      this.txHash = txHash; 
-      console.log(txHash);
-      this.router.navigate(['/details']);
-      const { data } = await axios.post(`http://localhost:3000/txnHash`, 
-      {txHash: this.txHash}
-      );
-    }
+  async getTxHash(event?: MouseEvent) {
+    const txHash = event ? (event.target as HTMLElement).innerHTML : '';
+    console.log(txHash);
+    this.router.navigate(['/details']);
+    const { data } = await axios.post(`http://localhost:3000/txnHash`, 
+      {txHash: txHash}
+    );
     return txHash;
-  };
-
+  }
 }
