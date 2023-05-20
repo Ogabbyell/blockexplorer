@@ -1,6 +1,3 @@
-# blockexplorer
-Blockchain explorer built with Angular 15 and Nodejs 18
-
 # Ethereum Block Explorer (Crypto Surf)
 
 Crypto surf is a basic Ethereum blockexplorer built with Angular 15 and Node.js 18. It is my Alchemy University week 3 assignment for the seven (7) weeks Ethereum Developer Bootcamp learning path.
