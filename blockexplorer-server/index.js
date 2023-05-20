@@ -31,7 +31,7 @@ const main = async () => {
   
   price = Object.assign({}, price.data);
   const ethPrice = Number(price[0].current_price);
-  console.log(ethPrice);
+  // console.log(ethPrice);
   
   // get latest block in the ethereum blockchain
   const latestBlock = await alchemy.core.getBlockNumber();
@@ -139,7 +139,7 @@ app.get("/accounts", async (req, res) => {
 
 app.post("/txnHash", async (req, res) => {
   txHash = req.body.txHash;
-  console.log(txHash);
+  // console.log(txHash);
   return txHash;
 });
 
@@ -150,7 +150,7 @@ const txnDetails = async () => {
   //Call the method to fetch the transaction receipt of the tx
   let response = await alchemy.core.getTransactionReceipt(tx);
 
-  console.log(response);
+  // console.log(response);
 
   return { response };
 };

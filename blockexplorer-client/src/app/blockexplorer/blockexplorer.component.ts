@@ -55,7 +55,6 @@ export class BlockexplorerComponent implements OnInit {
   async getAddress(walletAddress: string) { 
     if (walletAddress) {
       this.walletAddress = walletAddress; 
-      console.log(walletAddress);
       this.router.navigate(['/accounts']);
       const { data } = await axios.post(`http://localhost:3000/send`, 
       {walletAddress: this.walletAddress}
@@ -68,7 +67,6 @@ export class BlockexplorerComponent implements OnInit {
   txHash: string = "";
   async getTxHash(event?: MouseEvent) {
     const txHash = event ? (event.target as HTMLElement).innerHTML : '';
-    console.log(txHash);
     this.router.navigate(['/details']);
     const { data } = await axios.post(`http://localhost:3000/txnHash`, 
       {txHash: txHash}

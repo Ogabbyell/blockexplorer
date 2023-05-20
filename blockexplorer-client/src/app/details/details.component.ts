@@ -2,20 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import axios from 'axios';
 
-// interface ITransaction {
-//   to: string;
-//   from: string;
-//   contractAddress: string;
-//   transactionIndex: number;
-//   gasUsed: any;
-//   blockHash: string;
-//   transactionHash: string;
-//   blockNumber: number;
-//   confirmations: number;
-//   status: number;
-//   type: number;
-//   byzantium: boolean;
-// }
 
 @Component({
   selector: 'app-details',
@@ -38,12 +24,10 @@ export class DetailsComponent implements OnInit {
   status = '';
   type = '';
   byzantium  = '';
-
-  // transaction: ITransaction[] = [];
+  
 
   async ngOnInit() {
     const { data } = await axios.get(`http://localhost:3000/details`);
-    console.log(data.response.transactionHash);
     this.transactionHash = data.response.transactionHash;
     this.to = data.response.to;
     this.from = data.response.from;
